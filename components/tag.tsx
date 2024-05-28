@@ -1,4 +1,5 @@
 "use client"
+
 import Link from "next/link";
 import { badgeVariants } from "./ui/badge";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -6,8 +7,8 @@ import { createPageURL } from "@/lib/utils";
 
 interface TagProps {
   tag: string;
-  current?: boolean;
   count?: number;
+  current?: boolean;
 }
 export function Tag({ tag, current, count }: TagProps) {
   const pathname = usePathname();

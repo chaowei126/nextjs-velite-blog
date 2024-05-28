@@ -54,4 +54,4 @@ export function createPageURL (pathname:string, tagName:string, pageNumber: numb
   params.set("tag", tagName);
   params.set("page", pageNumber.toString());
   return `${pathname}?${params.toString()}`;
-};
+}
