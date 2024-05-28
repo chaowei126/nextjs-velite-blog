@@ -30,6 +30,7 @@ export function getAllTags(posts: Array<Post>) {
     post.tags?.forEach(tag => {
       tags[tag] = (tags[tag] ?? 0) + 1;
     })
+    tags['all'] = (tags['all'] ?? 0) + 1;
   })
 
   return tags;
@@ -40,9 +41,17 @@ export function sortTagsByCount(tags: Record<string, number>) {
 }
 
 export function getPostsByTagSlug(posts: Array<Post>, tag: string) {
+  if(tag === 'all') return posts
   return posts.filter(post => {
     if (!post.tags) return false
     const slugifiedTags = post.tags.map(tag => slug(tag))
     return slugifiedTags.includes(tag)
   })
 }
+
+export function createPageURL (pathname:string, tagName:string, pageNumber: number | string) {
+  const params = new URLSearchParams();
+  params.set("tag", tagName);
+  params.set("page", pageNumber.toString());
+  return `${pathname}?${params.toString()}`;
+};

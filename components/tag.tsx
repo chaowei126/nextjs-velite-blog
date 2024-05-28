@@ -1,6 +1,8 @@
+"use client"
 import Link from "next/link";
-import { slug } from "github-slugger";
 import { badgeVariants } from "./ui/badge";
+import { usePathname, useSearchParams } from "next/navigation";
+import { createPageURL } from "@/lib/utils";
 
 interface TagProps {
   tag: string;
@@ -8,13 +10,18 @@ interface TagProps {
   count?: number;
 }
 export function Tag({ tag, current, count }: TagProps) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const currentTag = searchParams.get("tag") || 'all';
+  let currentPage = Number(searchParams.get("page")) || 1;
+  if(currentTag !== tag) currentPage = 1;
   return (
     <Link
       className={badgeVariants({
         variant: current ? "default" : "secondary",
         className: "no-underline rounded-md",
       })}
-      href={`/tags/${slug(tag)}`}
+      href={createPageURL(pathname, tag, currentPage)}
     >
       {tag} {count ? `(${count})` : null}
     </Link>

@@ -9,6 +9,7 @@ import {
   PaginationPrevious,
   PaginationNext,
 } from "./ui/pagination";
+import { createPageURL } from "@/lib/utils";
 
 interface QueryPaginationProps {
   totalPages: number;
@@ -22,23 +23,18 @@ export function QueryPagination({
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
+  const currentTag = searchParams.get("tag") || 'all';
   const currentPage = Number(searchParams.get("page")) || 1;
 
   const prevPage = currentPage - 1;
   const nextPage = currentPage + 1;
-
-  const createPageURL = (pageNumber: number | string) => {
-    const params = new URLSearchParams(searchParams);
-    params.set("page", pageNumber.toString());
-    return `${pathname}?${params.toString()}`;
-  };
 
   return (
     <Pagination className={className}>
       <PaginationContent>
         {prevPage >= 1 ? (
           <PaginationItem>
-            <PaginationPrevious href={createPageURL(prevPage)} />
+            <PaginationPrevious href={createPageURL(pathname, currentTag, prevPage)} />
           </PaginationItem>
         ) : null}
 
@@ -51,7 +47,7 @@ export function QueryPagination({
             >
               <PaginationLink
                 isActive={currentPage === index + 1}
-                href={createPageURL(index + 1)}
+                href={createPageURL(pathname, currentTag, index + 1)}
               >
                 {index + 1}
               </PaginationLink>
@@ -60,7 +56,7 @@ export function QueryPagination({
 
         {nextPage <= totalPages ? (
           <PaginationItem>
-            <PaginationNext href={createPageURL(nextPage)} />
+            <PaginationNext href={createPageURL(pathname, currentTag, nextPage)} />
           </PaginationItem>
         ) : null}
       </PaginationContent>
