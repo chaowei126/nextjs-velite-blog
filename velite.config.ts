@@ -26,7 +26,7 @@ const posts = defineCollection({
 
 const resumes = defineCollection({
   name: "Resume",
-  pattern: "persion/**/*.mdx",
+  pattern: "resume/**/*.mdx",
   schema: s
     .object({
       slug: s.path(),

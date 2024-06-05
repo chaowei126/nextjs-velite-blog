@@ -26,7 +26,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
   const title = tag.split("-").join(" ");
   const currentPage = Number(searchParams?.page) || 1;
 
-  const displayPosts = getPostsByTagSlug(posts, slug(tag));
+  const displayPosts = getPostsByTagSlug(posts, tag);
   const totalPages = Math.ceil(displayPosts.length / POSTS_PER_PAGE);
   
   const tags = getAllTags(posts);

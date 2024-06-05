@@ -49,13 +49,9 @@ export function getPostsByTagSlug(posts: Array<Post>, tag: string) {
   });
 }
 
-export function createPageURL(
-  pathname: string,
-  tagName: string,
-  pageNumber: number | string
-) {
+export function createPageURL(pathname: string, tagName: string, pageNumber: number | string) {
   const params = new URLSearchParams();
-  params.set("tag", tagName);
+  params.set("tag", slug(tagName));
   params.set("page", pageNumber.toString());
   return `${pathname}?${params.toString()}`;
 }
