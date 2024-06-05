@@ -3,7 +3,7 @@ import { PostItem } from "@/components/post-item";
 import { QueryPagination } from "@/components/query-pagination";
 import { Tag } from "@/components/tag";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getAllTags, getPostsByTagSlug, sortPosts, sortTagsByCount } from "@/lib/utils";
+import { getAllTags, getPostsByTagSlug, sortTagsByCount } from "@/lib/utils";
 import { slug } from "github-slugger";
 import { Metadata } from "next";
 
@@ -26,7 +26,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
   const title = tag.split("-").join(" ");
   const currentPage = Number(searchParams?.page) || 1;
 
-  const displayPosts = getPostsByTagSlug(posts, tag);
+  const displayPosts = getPostsByTagSlug(posts, slug(tag));
   const totalPages = Math.ceil(displayPosts.length / POSTS_PER_PAGE);
   
   const tags = getAllTags(posts);
