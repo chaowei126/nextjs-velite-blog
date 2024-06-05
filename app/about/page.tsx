@@ -21,7 +21,7 @@ export default async function AboutPage() {
       <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
         <div className="min-w-48 max-w-48 flex flex-col gap-2">
           <Avatar className="h-48 w-48">
-            <AvatarImage src="/avatar.png" alt={siteConfig.author} />
+            <AvatarImage src="/avatar.jpg" alt={siteConfig.author} />
             <AvatarFallback>JC</AvatarFallback>
           </Avatar>
           <h2 className="text-2xl font-bold text-center break-words">
@@ -32,13 +32,7 @@ export default async function AboutPage() {
           </p>
         </div>
         <p className="text-muted-foreground text-lg py-4">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum
+        Highly skilled and experienced full-stack developer with 17 years of expertise in both front-end and back-end technologies. Proficient in React, Vue, and Next.js for front-end development, and Spring Boot, Spring Cloud, and Node.js for back-end development. Demonstrated leadership in microservices architecture and cloud technologies including Kubernetes, Hadoop. Strong command of Linux and shell scripting. Proven track record of leading technical projects, solving complex problems, and collaborating with cross-functional teams to deliver high-quality software solutions.
         </p>
       </div>
     </div>

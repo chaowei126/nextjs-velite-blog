@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Link from "next/link";
 import { badgeVariants } from "./ui/badge";
@@ -13,9 +13,9 @@ interface TagProps {
 export function Tag({ tag, current, count }: TagProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const currentTag = searchParams.get("tag") || 'all';
+  const currentTag = searchParams.get("tag") || "all";
   let currentPage = Number(searchParams.get("page")) || 1;
-  if(currentTag !== tag) currentPage = 1;
+  if (currentTag !== tag) currentPage = 1;
   return (
     <Link
       className={badgeVariants({

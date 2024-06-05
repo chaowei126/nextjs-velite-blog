@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description: "This is a description",
 };
 
-const POSTS_PER_PAGE = 2;
+const POSTS_PER_PAGE = 5;
 
 interface BlogPageProps {
   searchParams: {
