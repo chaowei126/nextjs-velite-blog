@@ -24,6 +24,19 @@ const posts = defineCollection({
     .transform(computedFields),
 });
 
+const resumes = defineCollection({
+  name: "Resume",
+  pattern: "persion/**/*.mdx",
+  schema: s
+    .object({
+      slug: s.path(),
+      title: s.string().max(99),
+      published: s.boolean().default(true),
+      body: s.mdx(),
+    })
+    .transform(computedFields),
+});
+
 export default defineConfig({
   root: "content",
   output: {
@@ -33,7 +46,7 @@ export default defineConfig({
     name: "[name]-[hash:6].[ext]",
     clean: true,
   },
-  collections: { posts },
+  collections: { posts, resumes },
   mdx: {
     rehypePlugins: [
       rehypeSlug,
