@@ -1,0 +1,101 @@
+---
+title: install MySQL 8.0.37 on CentOS 7.6
+description: To install MySQL 8.0.37 on CentOS 7.6 and have it coexist with the existing MySQL 5.7, follow these steps. Assume you have already downloaded the mysql-8.0.37-linux-glibc2.12-x86_64.tar.xz installation package.
+date: 2024-06-06
+tags: ["database"]
+published: true
+---
+
+### 1. Extract the Installation Package
+First, extract the package to the target directory `/usr/local/bonc/mysql-8.0.37`:
+```sh
+sudo mkdir -p /usr/local/bonc/mysql-8.0.37
+sudo tar -xvf mysql-8.0.37-linux-glibc2.12-x86_64.tar.xz -C /usr/local/bonc/mysql-8.0.37 --strip-components=1
+```
+
+### 2. Create MySQL User and Group
+If the MySQL user and group do not exist, create them:
+```sh
+sudo groupadd mysql
+sudo useradd -r -g mysql -s /bin/false mysql
+```
+
+### 3. Set Directory Permissions
+Set the permissions for the MySQL directory:
+```sh
+sudo chown -R mysql:mysql /usr/local/bonc/mysql-8.0.37
+```
+
+### 4. Initialize the Database
+Initialize the MySQL data directory:
+```sh
+cd /usr/local/bonc/mysql-8.0.37
+sudo mkdir mysql-files
+sudo chown mysql:mysql mysql-files
+sudo chmod 750 mysql-files
+sudo bin/mysqld --initialize --user=mysql --basedir=/usr/local/bonc/mysql-8.0.37 --datadir=/usr/local/bonc/mysql-8.0.37/data
+```
+
+### 5. Configure MySQL
+Create a MySQL configuration file at `/etc/my.cnf` or `/etc/my.cnf.d/mysql-8.0.37.cnf`, ensuring it does not conflict with the existing MySQL 5.7 configuration. Example:
+```ini:/etc/my.cnf.d/mysql-8.0.37.cnf
+[mysqld]
+basedir = /usr/local/bonc/mysql-8.0.37
+datadir = /usr/local/bonc/mysql-8.0.37/data
+port = 3307
+socket = /usr/local/bonc/mysql-8.0.37/mysql.sock
+pid-file = /usr/local/bonc/mysql-8.0.37/mysql.pid
+log-error = /usr/local/bonc/mysql-8.0.37/mysql-error.log
+```
+
+### 6. Set Environment Variables
+Add the MySQL 8.0.37 `bin` directory to the `PATH` environment variable:
+```sh
+echo 'export PATH=/usr/local/bonc/mysql-8.0.37/bin:$PATH' >> ~/.bashrc
+source ~/.bashrc
+```
+
+### 7. Start the MySQL Server
+Start the MySQL 8.0.37 server:
+```sh
+sudo /usr/local/bonc/mysql-8.0.37/bin/mysqld_safe --defaults-file=/etc/my.cnf.d/mysql-8.0.37.cnf --user=mysql &
+```
+
+### 8. Set the root User Password
+Log in using the temporary password and set the root user password:
+```sh
+sudo /usr/local/bonc/mysql-8.0.37/bin/mysql -u root -p --socket=/usr/local/bonc/mysql-8.0.37/mysql.sock
+```
+
+In the MySQL prompt, set the root user password:
+```sql
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'new_password';
+```
+
+### 9. Create a Service File (Optional)
+If you want MySQL 8.0.37 to run as a system service, create a systemd service file at `/etc/systemd/system/mysql-8.0.37.service`:
+```ini:/etc/systemd/system/mysql-8.0.37.service
+[Unit]
+Description=MySQL Server 8.0.37
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/usr/local/bonc/mysql-8.0.37/bin/mysqld_safe --defaults-file=/etc/my.cnf.d/mysql-8.0.37.cnf --user=mysql
+ExecStop=/usr/local/bonc/mysql-8.0.37/bin/mysqladmin shutdown --defaults-file=/etc/my.cnf.d/mysql-8.0.37.cnf --user=root --password=your_password
+PIDFile=/usr/local/bonc/mysql-8.0.37/mysql.pid
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Enable and start the service:
+```sh
+sudo systemctl daemon-reload
+sudo systemctl enable mysql-8.0.37
+sudo systemctl start mysql-8.0.37
+```
+
+In this way, you can install and run MySQL 8.0.37 on CentOS 7.6 while keeping the existing MySQL 5.7.
+
